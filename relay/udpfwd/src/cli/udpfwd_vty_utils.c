@@ -420,7 +420,7 @@ udpfwd_setcommoncolumn (void *row_serv, UDPFWD_FEATURE type)
     /* Update the interface name */
     OVSREC_PORT_FOR_EACH(port_row, idl)
     {
-        if (strcmp(port_row->name, (char*)vty->index) == 0)
+        if (strcmp(port_row->name, (char*)((uintptr_t)vty->index)) == 0)
         {
 #ifdef FTR_UDP_BCAST_FWD
             if (type == UDP_BCAST_FORWARDER)

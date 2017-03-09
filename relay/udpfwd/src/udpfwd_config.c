@@ -39,19 +39,11 @@ VLOG_DEFINE_THIS_MODULE(udpfwd_config);
  */
 UDPFWD_SERVER_T* udpfwd_get_server_entry(IP_ADDRESS ipaddress, uint16_t udpPort)
 {
-   UDPFWD_SERVER_T *serverIP = NULL;
    uint32_t      hashVal = 0;
 
    hashVal = hash_int(ipaddress, (uint32_t)udpPort);
-   CMAP_FOR_EACH_WITH_HASH(serverIP, cmap_node, hashVal,
-                           &udpfwd_ctrl_cb_p->serverHashMap) {
-       if ((serverIP->ip_address == ipaddress) &&
-           (serverIP->udp_port == udpPort)) {
-           return serverIP;
-       }
-   }
 
-   return NULL;
+   return (UDPFWD_SERVER_T *)cmap_find(&udpfwd_ctrl_cb_p->serverHashMap, hashVal);
 }
 
 /*

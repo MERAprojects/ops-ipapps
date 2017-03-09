@@ -74,16 +74,10 @@ DHCPV6_RELAY_SERVER_T* dhcpv6r_get_server_entry(char* ipv6_address,
                                         char* egressIfName)
 {
     uint32_t hash_key;
-    DHCPV6_RELAY_SERVER_T *serverIP = NULL;
 
     GENERATE_KEY(ipv6_address, egressIfName, hash_key);
-    CMAP_FOR_EACH_WITH_HASH(serverIP, cmap_node, hash_key,
-                           &dhcpv6_relay_ctrl_cb_p->serverHashMap) {
-        if (compare_server(ipv6_address, serverIP->ipv6_address,
-                egressIfName, serverIP->egressIfName))
-            return serverIP;
-    }
-    return NULL;
+
+    return (DHCPV6_RELAY_SERVER_T*) cmap_find(&dhcpv6_relay_ctrl_cb_p->serverHashMap, hash_key);
 }
 
 /*
