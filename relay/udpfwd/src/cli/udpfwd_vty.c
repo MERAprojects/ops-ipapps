@@ -144,7 +144,7 @@ udpfwd_serverconfig(udpfwd_server *udpfwdServ, bool set)
     }
 
     /* lookup for the record in the UDP broadcast server table */
-    row_serv = udp_bcast_server_row_lookup((char*)vty->index,
+    row_serv = udp_bcast_server_row_lookup((char*)((uintptr_t)vty->index),
                                            DEFAULT_VRF_NAME, udpfwdServ);
 
     if (row_serv)
@@ -157,7 +157,7 @@ udpfwd_serverconfig(udpfwd_server *udpfwdServ, bool set)
     if (set)
     {
         isMaxEntries = server_address_maxcount_reached
-                            ((char*)vty->index, type);
+                            ((char*)((uintptr_t)vty->index), type);
         if (isMaxEntries)
         {
             vty_out(vty, "%s: Entry not allowed as maximum "

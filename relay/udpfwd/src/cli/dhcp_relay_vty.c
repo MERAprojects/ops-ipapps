@@ -108,7 +108,7 @@ int8_t dhcp_relay_helperaddressconfig(udpfwd_server *udpfwdServ, bool set)
     }
 
     /* Lookup for the record in the dhcp-relay table */
-    row_serv = dhcp_relay_row_lookup((char*)vty->index, DEFAULT_VRF_NAME);
+    row_serv = dhcp_relay_row_lookup((char*)((uintptr_t)vty->index), DEFAULT_VRF_NAME);
     if (row_serv)
     {
         isAddrMatch = find_udpfwd_server_ip(row_serv->ipv4_ucast_server,
@@ -119,7 +119,7 @@ int8_t dhcp_relay_helperaddressconfig(udpfwd_server *udpfwdServ, bool set)
     if (set)
     {
         isMaxEntries = server_address_maxcount_reached
-                            ((char*)vty->index, type);
+                            ((char*)((uintptr_t)vty->index), type);
         if (isMaxEntries)
         {
             vty_out(vty, "Maximum allowed helper addresses already "
@@ -762,13 +762,13 @@ dhcp_relay_bootp_gateway_config(const char *gatewayAddress, bool set)
     }
 
     /* Lookup for the record in the dhcp-relay table */
-    row = dhcp_relay_row_lookup((char*)vty->index, DEFAULT_VRF_NAME);
+    row = dhcp_relay_row_lookup((char*)((uintptr_t)vty->index), DEFAULT_VRF_NAME);
     if (set)
     {
 
         OVSREC_PORT_FOR_EACH (port_row, idl)
         {
-            if (strcmp(port_row->name, (char *)vty->index) != 0)
+            if (strcmp(port_row->name, (char*)((uintptr_t)vty->index)) != 0)
                 continue;
 
             /* To check IP address configuration on the interface. */
